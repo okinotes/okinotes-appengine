@@ -1,0 +1,98 @@
+<div class="pull-right alert alert-warning" ng-if="cancelList.length > 0">
+	<p>{{cancelList[0].msg}} <a href="" class="alert-link" ng-click="cancelList[0].undoFct()">Undo</a></p>
+</div>
+
+<h1>{{page.title}}</h1>
+	
+<div class="container">
+	<div id="notes-layout" data-masonry data-preserve-order>
+		<div class="note masonry-brick col-lg-3 col-md-4 col-sm-6 col-xs-12" ng-if="canEdit">
+			<article class="content">
+				<form  ng-submit="addItem()">
+				<header class="clearfix">
+					<div class="note-date pull-left">Add a new item</div>
+					<div class="pull-right btn-group">
+						<select class="form-control input-sm" ng-model="newItem.kind">
+							<option value="TEXT">Text</option>
+							<option value="QUOTE">Quote</option>
+							<option value="URL">URL</option>
+						</select>
+					</div>
+				</header>
+				
+				<div ng-if="newItem.kind == 'URL' || newItem.kind == 'TEXT'">
+					<input type="text" class="form-control" name="title" placeholder="Title" ng-model="newItem.title"/></div>
+				<div>
+					<textarea class="form-control resizev" rows="3" name="content" placeholder="Content" ng-model="newItem.content"></textarea></div>
+				<div ng-if="newItem.kind == 'QUOTE'">
+					<input type="text" class="form-control" id="inputSource" name="source" placeholder="Source" ng-model="newItem.source"></div>
+				<div ng-if="newItem.kind == 'URL' || newItem.kind == 'QUOTE'">
+					<input type="url" class="form-control" id="inputURL" name="url" placeholder="URL" ng-model="newItem.url"></div>
+				
+				<footer class="clearfix">
+					<div class="pull-right btn-group">
+						<button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-floppy-disk"></span></button>
+					</div>
+				</footer>
+				</form>
+			</article>
+		</div>
+		<div class="note masonry-brick col-lg-3 col-md-4 col-sm-6 col-xs-12"  ng-repeat="item in items | orderBy:'-lastModificationDate'" id="{{item.id}}">
+			<article class="content" ng-if="!item.isEdited">
+				<header class="clearfix">
+					<div class="note-date pull-left"><time datetime="{{item.lastModificationDate}}">{{item.lastModificationDate | amCalendar}}</time></div>
+					<div class="pull-right btn-group" ng-if="canEdit">
+						<button type="button" class="btn btn-default btn-xs" ng-click="startEditing(item)"><span class="glyphicon glyphicon-pencil"></span></button>
+						<button type="button" class="btn btn-default btn-xs" ng-click="deleteItem(item)"><span class="glyphicon glyphicon-trash"></span></button>
+					</div>
+				</header>
+				<div ng-if="item.kind == 'TEXT'">
+					<h2>{{item.title}}</h2>
+					<p ng-bind-html="item.htmlContent"></p>
+				</div>
+				<blockquote ng-if="item.kind == 'QUOTE'">
+					<p ng-bind-html="item.htmlContent"></p>
+					<small ng-if="item.source"><cite>{{item.source}}</cite></small>
+				</blockquote>
+				<div ng-if="item.kind == 'URL'">
+					<h2 ng-if="item.title">{{item.title}}</h2>
+					<p><a target="_blank" href="{{item.url}}">{{item.url}}</a></p>
+					<p ng-bind-html="item.htmlContent"></p>
+				</div>
+			</article>
+			<article class="content" ng-if="item.isEdited">
+				<form  ng-submit="saveEditing(item)">
+				<header class="clearfix">
+					<div class="pull-right btn-group">
+						<select class="form-control input-sm" ng-model="item.kind">
+							<option value="TEXT">Text</option>
+							<option value="QUOTE">Quote</option>
+							<option value="URL">URL</option>
+						</select>
+					</div>
+				</header>
+				
+				<div ng-if="item.kind == 'URL' || item.kind == 'TEXT'">
+					<input type="text" class="form-control" name="title" placeholder="Title" ng-model="item.title"/></div>
+				<div>
+					<textarea class="form-control resizev" rows="3" name="content" placeholder="Content" ng-model="item.content"></textarea></div>
+				<div ng-if="item.kind == 'QUOTE'">
+					<input type="text" class="form-control" id="inputSource" name="source" placeholder="Source" ng-model="item.source"></div>
+				<div ng-if="item.kind == 'URL' || item.kind == 'QUOTE'">
+					<input type="url" class="form-control" id="inputURL" name="url" placeholder="URL" ng-model="item.url"></div>
+				
+				<footer class="clearfix">
+					<div class="pull-right btn-group">
+						<button type="cancel" class="btn btn-default btn-xs" ng-click="cancelEditing(item)"><span class="glyphicon glyphicon-remove"></span></button>
+						<button type="submit" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-ok"></span></button>
+					</div>
+				</footer>
+				</form>
+			</article>
+		</div>
+	</div>
+</div>
+	
+<div class="container license" ng-if="page.contentLicense">
+<p>{{page.contentLicense}}</p>
+</div>

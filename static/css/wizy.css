@@ -1,0 +1,49 @@
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  
+  background: url("/static/img/bg-pehoe.jpg") no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+footer {
+	text-align:center;
+	color:#999;
+}
+
+footer li {
+	display: inline;
+	padding: 0 2px;
+}
+
+footer ul {
+	padding: 0;
+}
+
+footer p {
+	margin: 0;
+}
+
+.navbar {
+  margin-bottom: 20px;
+}
+
+.panel {
+	background-color: rgba(255, 255, 255, 0.9);
+}
+
+.navbar-brand {
+	font-family: 'Gloria Hallelujah', cursive;
+}
+.brand {
+	font-family: 'Gloria Hallelujah', cursive;
+}
+.resizev  {
+	resize: vertical;
+}
+
+
+
